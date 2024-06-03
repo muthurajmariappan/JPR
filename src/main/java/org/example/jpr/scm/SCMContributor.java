@@ -4,18 +4,19 @@ import com.jcabi.github.Github;
 import com.jcabi.github.Repo;
 import com.jcabi.github.Repos;
 import com.jcabi.github.RtGithub;
-import org.example.jpr.contributor.Contributor;
-import org.example.jpr.util.ProcessBuilderClient;
+import org.apache.commons.io.FileUtils;
 import org.example.jpr.context.PlanContext;
+import org.example.jpr.contributor.Contributor;
 import org.example.jpr.util.Constants;
+import org.example.jpr.util.ProcessBuilderClient;
 import org.example.jpr.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +63,14 @@ public class SCMContributor implements Contributor {
 
     private String copyHelper(PlanContext context) throws IOException {
         ClassPathResource cr = new ClassPathResource("git-helper.bat");
-        Path crPath = cr.getFile().toPath();
-        return Files.copy(
-                crPath,
-                Paths.get(context.getBaseProjectDir()).resolve(crPath.getFileName())
-        ).toAbsolutePath().toString();
+        File helper = Paths.get(context.getBaseProjectDir()).resolve(cr.getFilename()).toFile();
+        try (InputStream in = cr.getInputStream()) {
+            FileUtils.copyInputStreamToFile(
+                    in,
+                    helper
+            );
+        }
+        return helper.getAbsolutePath();
     }
 
     private void createRepositorySecret(PlanContext context) {

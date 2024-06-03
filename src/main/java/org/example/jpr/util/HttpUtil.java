@@ -33,7 +33,7 @@ public class HttpUtil {
                             }
                         })
                         .retryWhen(Retry
-                                .fixedDelay(5, Duration.ofSeconds(60))
+                                .fixedDelay(5, Duration.ofSeconds(120))
                                 .filter(t -> {
                                     boolean retry = false;
                                     if (t instanceof TimeoutException) {
