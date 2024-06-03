@@ -47,6 +47,7 @@ public class SpringProjectContributor implements Contributor {
 
     @Override
     public void contribute(PlanContext context) {
+        logger.info("---------- Creating base project using spring initializr ----------");
         String zip = Paths.get(
                 context.getBaseProjectDir(),
                 context.getProjectName() + ".zip")
@@ -55,15 +56,14 @@ public class SpringProjectContributor implements Contributor {
             updateArgumentsMap(context);
             download(zip);
             extract(zip, context.getBaseProjectDir());
+            logger.info("---------- Created base project using spring initializr ----------");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void download(String zip) throws IOException {
         String url = buildDownloadUrl();
-        //"https://start.spring.io/starter.zip?type=gradle-project&language=java&bootVersion=3.3.0&baseDir=demo&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&packaging=jar&javaVersion=17";
         Resource resource = UrlResource.from(url);
         byte[] bytes = resource.getContentAsByteArray();
         logger.info("spring initializr length:" + bytes.length);

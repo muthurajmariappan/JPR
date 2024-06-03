@@ -5,8 +5,10 @@ import org.example.jpr.orchestrator.JPROrchestrator;
 import org.example.jpr.plan.Plan;
 import org.example.jpr.plan.PlanBuilder;
 import org.example.jpr.stages.StageFactory;
+import org.example.jpr.util.ApplicationInputUtil;
 import org.example.jpr.util.Constants;
 import org.example.jpr.util.FreeMarkerUtil;
+import org.example.jpr.context.ProjectDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -19,28 +21,32 @@ public class Application implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
+        FreeMarkerUtil.configure();
         SpringApplication.run(Application.class, args);
     }
 
     @Override
     public void run(String[] args) {
-//        String wd = "D:\\temp";
-//        String prefix = "demo";
-//        Path out = Files.createTempDirectory(Path.of(wd), prefix);
-//        String zip = out.toAbsolutePath() + "\\demo.zip";
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Enter a number:");
-//        int num = sc.nextInt();
-        FreeMarkerUtil.configure();
-        logger.info("#########Starting the project creation process#########");
-        PlanContext context = new PlanContext("UserService");
+        System.out.println("Welcome to the Java Paved Road!!!!!!!!!!!!!!");
+        ProjectDefinition projectDefinition = ApplicationInputUtil.getProjectDefinition();
+
+        logger.info("######### Starting the project creation process #########");
+        logger.info(
+                String.format(
+                        "For Project Type - %s, Project Name - %s",
+                        projectDefinition.projectType(),
+                        projectDefinition.projectName()
+                )
+        );
+        PlanContext context = new PlanContext(projectDefinition.projectName());
         Plan plan = buildPlan();
-        System.out.println(plan.toString());
+        logger.info(plan.toString());
         JPROrchestrator orchestrator = new JPROrchestrator(plan, context);
         orchestrator.orchestrate();
+        logger.info("######### Finished the project creation process #########");
     }
 
-    private static Plan buildPlan() {
+    private Plan buildPlan() {
         return new PlanBuilder()
                 .generationStage(
                         StageFactory.create(

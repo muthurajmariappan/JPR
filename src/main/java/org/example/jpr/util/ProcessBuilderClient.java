@@ -34,6 +34,7 @@ public class ProcessBuilderClient {
             String iline;
             while ((iline = ibr.readLine()) != null) {
                 System.out.println(iline);
+                output.append(iline);
             }
             ibr.close();
 

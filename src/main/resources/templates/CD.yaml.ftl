@@ -19,9 +19,12 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build
       run: ./gradlew clean build
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${r"${{ secrets.AZURE_CREDENTIALS }}"}
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v3
       with:
-        app-name: my-app-name
-        publish-profile: ${r"${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}"}
-        package: ${r"build/libs/*.jar"}
+        app-name: ${projectName}
+        package: ${r"build/libs/*-SNAPSHOT.jar"}

@@ -21,7 +21,7 @@ public class SpringRestControllerContributor implements Contributor {
 
     @Override
     public void contribute(PlanContext context) {
-        logger.info("Creating REST Controller and DTO");
+        logger.info("---------- Creating REST Controller and DTO ----------");
         String packageName = Util.getPackageName(context);
         Path path = Paths.get(
                 context.getProjectDir(),
@@ -38,10 +38,10 @@ public class SpringRestControllerContributor implements Contributor {
         );
         FreeMarkerUtil.renderTemplate(
                 CONTROLLER_DTO_TEMPLATE,
-                path.resolve(Util.removeFtlExtension(CONTROLLER_TEMPLATE)).toAbsolutePath().toString(),
+                path.resolve(Util.removeFtlExtension(CONTROLLER_DTO_TEMPLATE)).toAbsolutePath().toString(),
                 input
         );
-        logger.info("Created REST Controller and DTO");
+        logger.info("---------- Created REST Controller and DTO ----------");
     }
 
     @Override

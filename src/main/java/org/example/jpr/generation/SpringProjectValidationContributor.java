@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpringProjectValidationController implements Contributor {
+public class SpringProjectValidationContributor implements Contributor {
 
-    private final Logger logger = LoggerFactory.getLogger(SpringProjectValidationController.class);
+    private final Logger logger = LoggerFactory.getLogger(SpringProjectValidationContributor.class);
     private final boolean validate = false;
 
     @Override
     public void contribute(PlanContext context) {
+        logger.info("---------- Validating spring project ----------");
         if (validate) {
             logger.info("Validating the spring project through {gradlew clean build}");
             List<String> cmdArgs = new ArrayList<>();
@@ -25,7 +26,7 @@ public class SpringProjectValidationController implements Contributor {
             ProcessBuilderClient.executeCommand(cmdArgs, context.getProjectDir());
             logger.info("Validation of spring project successful");
         }
-
+        logger.info("---------- Validated spring project ----------");
     }
 
     @Override

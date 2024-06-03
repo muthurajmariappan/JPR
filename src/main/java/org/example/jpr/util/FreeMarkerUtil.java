@@ -1,7 +1,9 @@
 package org.example.jpr.util;
 
-import freemarker.core.ParseException;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.Version;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileWriter;
@@ -18,7 +20,7 @@ public class FreeMarkerUtil {
 
     public static void main(String[] args) throws IOException {
         configure();
-        Map<String, Object> input = new HashMap<String, Object>();
+        Map<String, Object> input = new HashMap<>();
         input.put("name", "John Doe");
         renderTemplate(
                 "hello.ftl",
@@ -42,15 +44,7 @@ public class FreeMarkerUtil {
             template.process(input, consoleWriter);
 
             template.process(input, fileWriter);
-        } catch (TemplateException e) {
-            throw new RuntimeException(e);
-        } catch (TemplateNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedTemplateNameException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (TemplateException | IOException e) {
             throw new RuntimeException(e);
         }
     }

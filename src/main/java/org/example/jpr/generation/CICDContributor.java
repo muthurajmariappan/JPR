@@ -21,14 +21,14 @@ public class CICDContributor implements Contributor {
 
     @Override
     public void contribute(PlanContext context) {
-        logger.info("Creating CI/CD pipeline definitions");
+        logger.info("---------- Creating CI/CD pipeline definitions ----------");
         Path path = Paths.get(
                 context.getProjectDir(),
                 GIT_HUB_ACTION_DIR
         );
         path.toFile().mkdirs();
         Map<String, Object> input = new HashMap<>();
-
+        input.put("projectName", context.getProjectName());
         FreeMarkerUtil.renderTemplate(
                 CI_TEMPLATE,
                 path.resolve(Util.removeFtlExtension(CI_TEMPLATE)).toAbsolutePath().toString(),
@@ -39,6 +39,11 @@ public class CICDContributor implements Contributor {
                 path.resolve(Util.removeFtlExtension(CD_TEMPLATE)).toAbsolutePath().toString(),
                 input
         );
-        logger.info("Created CI/CD pipeline definitions");
+        logger.info("---------- Created CI/CD pipeline definitions ----------");
+    }
+
+    @Override
+    public String toString() {
+        return "CICDContributor";
     }
 }

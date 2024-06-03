@@ -15,4 +15,24 @@ public class Util {
     public static String removeExtension(String input, String extension) {
         return input.split(extension)[0];
     }
+
+    public static String getGitHubToken() {
+        return System.getenv(Constants.GITHUB_TOKEN_VARIABLE);
+    }
+
+    public static String getAzureClientId() {
+        return System.getenv(Constants.AZURE_CLIENT_ID_VARIABLE);
+    }
+
+    public static String getAzureClientSecret() {
+        return System.getenv(Constants.AZURE_CLIENT_SECRET_VARIABLE);
+    }
+
+    public static String getAzureSubscriptionId() {
+        return System.getenv(Constants.AZURE_SUBSCRIPTION_ID_VARIABLE);
+    }
+
+    public static String getAzureTenantId() {
+        return System.getenv(Constants.AZURE_TENANT_ID_VARIABLE);
+    }
 }

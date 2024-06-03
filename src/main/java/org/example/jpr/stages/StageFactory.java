@@ -2,7 +2,6 @@ package org.example.jpr.stages;
 
 import org.example.jpr.contributor.ContributorFactory;
 import org.example.jpr.util.Constants;
-import org.example.jpr.stages.Stage;
 
 public class StageFactory {
 

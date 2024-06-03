@@ -8,6 +8,7 @@ import org.example.jpr.contributor.Contributor;
 import org.example.jpr.util.ProcessBuilderClient;
 import org.example.jpr.context.PlanContext;
 import org.example.jpr.util.Constants;
+import org.example.jpr.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -25,9 +26,11 @@ public class SCMContributor implements Contributor {
 
     @Override
     public void contribute(PlanContext context) {
+        logger.info("---------- Creating repository for project ----------");
         try {
             context.addOutputVariable(Constants.OUTPUT_VARIABLES.SCM_REPO_URL, createRepository(context));
             pushInitial(context, copyHelper(context));
+            logger.info("---------- Created repository for project and pushed the files ----------");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +42,7 @@ public class SCMContributor implements Contributor {
     }
 
     private String createRepository(PlanContext context) throws IOException {
-        Github github = new RtGithub("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");
+        Github github = new RtGithub(Util.getGitHubToken());
         Repos.RepoCreate create = new Repos.RepoCreate(context.getProjectName(), true);
         Repo repo = github.repos().create(create);
         String repoUrl = "https://github.com/" + repo;
@@ -63,5 +66,14 @@ public class SCMContributor implements Contributor {
                 crPath,
                 Paths.get(context.getBaseProjectDir()).resolve(crPath.getFileName())
         ).toAbsolutePath().toString();
+    }
+
+    private void createRepositorySecret(PlanContext context, String repoUrl) {
+        List<String> cmdArgs = new ArrayList<>();
+        cmdArgs.add(String.format(""));
+        cmdArgs.add(context.getOutputVariable(Constants.OUTPUT_VARIABLES.SCM_REPO_URL));
+        cmdArgs.add(Paths.get(context.getScmProjectDir()).getFileName().toString());
+        cmdArgs.add(context.getProjectName());
+        ProcessBuilderClient.executeCommand(cmdArgs, context.getBaseProjectDir());
     }
 }
