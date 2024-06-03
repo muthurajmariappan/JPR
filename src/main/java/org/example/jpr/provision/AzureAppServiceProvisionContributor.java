@@ -24,16 +24,15 @@ public class AzureAppServiceProvisionContributor implements Contributor {
     public void contribute(PlanContext context) {
         logger.info("---------- Provisioning Azure App Service ----------");
         try {
-            throw new RuntimeException();
-//            AzureResourceManager azureResourceManager = getAzureResourceManager();
-//            context.addOutputVariable(
-//                    Constants.OUTPUT_VARIABLES.APP_SERVICE_URL,
-//                    createWebApp(
-//                    azureResourceManager,
-//                    context.getProjectName(),
-//                    Region.US_EAST
-//            ));
-//            logger.info("---------- Provisioned Azure App Service ----------");
+            AzureResourceManager azureResourceManager = getAzureResourceManager();
+            context.addOutputVariable(
+                    Constants.OUTPUT_VARIABLES.APP_SERVICE_URL,
+                    createWebApp(
+                    azureResourceManager,
+                    context.getProjectName(),
+                    Region.US_EAST
+            ));
+            logger.info("---------- Provisioned Azure App Service ----------");
         } catch (Exception e) {
             logger.error("Exception occurred while provisioning Azure App Service", e);
             logger.info("Using default app service url at https://testdemoservicepag.azurewebsites.net/");

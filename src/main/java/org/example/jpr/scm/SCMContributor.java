@@ -30,6 +30,7 @@ public class SCMContributor implements Contributor {
         try {
             context.addOutputVariable(Constants.OUTPUT_VARIABLES.SCM_REPO_URL, createRepository(context));
             pushInitial(context, copyHelper(context));
+            createRepositorySecret(context);
             logger.info("---------- Created repository for project and pushed the files ----------");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -68,12 +69,11 @@ public class SCMContributor implements Contributor {
         ).toAbsolutePath().toString();
     }
 
-    private void createRepositorySecret(PlanContext context, String repoUrl) {
+    private void createRepositorySecret(PlanContext context) {
         List<String> cmdArgs = new ArrayList<>();
-        cmdArgs.add(String.format(""));
-        cmdArgs.add(context.getOutputVariable(Constants.OUTPUT_VARIABLES.SCM_REPO_URL));
-        cmdArgs.add(Paths.get(context.getScmProjectDir()).getFileName().toString());
-        cmdArgs.add(context.getProjectName());
+        cmdArgs.add("curl");
+        cmdArgs.add(String.format("http://localhost:3000/secret/muthurajmariappan/%s/AZURE_CREDENTIALS", context.getProjectName()));
         ProcessBuilderClient.executeCommand(cmdArgs, context.getBaseProjectDir());
+        logger.info("Added secret to " + context.getOutputVariable(Constants.OUTPUT_VARIABLES.SCM_REPO_URL));
     }
 }

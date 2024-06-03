@@ -3,6 +3,7 @@ package org.example.jpr.validation;
 import org.example.jpr.context.PlanContext;
 import org.example.jpr.contributor.Contributor;
 import org.example.jpr.util.Constants;
+import org.example.jpr.util.HttpUtil;
 import org.example.jpr.util.ProcessBuilderClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +28,8 @@ public class AzureAppServiceValidatorContributor implements Contributor {
     private boolean validate(PlanContext context) {
         String url = context.getOutputVariable(Constants.OUTPUT_VARIABLES.APP_SERVICE_URL) + ACTUATOR_HEALTH_ENDPOINT;
         logger.info("curling app service at " + url);
-        String result = executeCommand(
-                context,
-                "curl",
-                url
-
-        );
-        return result.contains("{\"status\":\"UP\"}");
+        String result = HttpUtil.sendGetRequest(url);
+        return result != null && !result.isEmpty();
     }
 
     private String executeCommand(PlanContext context, String... args) {
