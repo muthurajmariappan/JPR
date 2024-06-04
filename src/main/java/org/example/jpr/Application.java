@@ -43,6 +43,12 @@ public class Application implements CommandLineRunner {
         logger.info(plan.toString());
         JPROrchestrator orchestrator = new JPROrchestrator(plan, context);
         orchestrator.orchestrate();
+        logger.info("---------- Report ----------");
+        logger.info("The project created in github at " +
+                context.getOutputVariable(Constants.OUTPUT_VARIABLES.SCM_REPO_URL));
+        logger.info("The production CD pipeline created to deploy to Azure App Service at " +
+                context.getOutputVariable(Constants.OUTPUT_VARIABLES.APP_SERVICE_URL));
+        logger.info("---------- Report ----------");
         logger.info("######### Finished the project creation process #########");
     }
 

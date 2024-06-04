@@ -84,7 +84,7 @@ public class AzureAppServiceProvisionContributor implements Contributor {
         print(app);
         final String appUrl = "http://" + app.defaultHostname();
 
-        logger.info("CURLing app service" + appUrl);
+        logger.info("Azure App Service created at " + appUrl);
 
         return appUrl;
     }

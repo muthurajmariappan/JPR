@@ -18,6 +18,11 @@ public class AzureAppServiceValidatorContributor implements Contributor {
     @Override
     public void contribute(PlanContext context) {
         logger.info("---------- Validating the spring project in Azure App Service ----------");
+        try {
+            Thread.sleep(3 * 60 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if (validate(context)) {
             logger.info("---------- Validation of spring project in Azure App Service successful ----------");
         } else {

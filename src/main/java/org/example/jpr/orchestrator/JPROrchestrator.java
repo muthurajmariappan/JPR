@@ -21,5 +21,6 @@ public class JPROrchestrator {
         plan.getProvisionStage().orchestrate(context);
         plan.getScmStage().orchestrate(context);
         plan.getValidationStage().orchestrate(context);
+        logger.info("######### Completed orchestrating the project creation #########");
     }
 }
