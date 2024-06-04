@@ -30,7 +30,7 @@ public class AzureAppServiceProvisionContributor implements Contributor {
                     createWebApp(
                     azureResourceManager,
                     context.getProjectName(),
-                    Region.US_EAST
+                    Region.US_EAST2
             ));
             logger.info("---------- Provisioned Azure App Service ----------");
         } catch (Exception e) {
